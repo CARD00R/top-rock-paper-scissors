@@ -2,7 +2,7 @@
 let playerScore = 0;
 let computerScore = 0;
 let resultText = "Result: ";
-
+let bShouldGameReset = false;
 // Get a random choice 
 function getRandomChoice(){
     
@@ -15,13 +15,26 @@ function getRandomChoice(){
 function UpdateScore(aResult){
     
     let resultEl = document.getElementById('result');
-    resultEl.textContent = "RESULT: " + aResult;
-
     let playerScoreEl = document.getElementsByClassName('scoreContainer')[0].childNodes[1];
-    playerScoreEl.textContent = "Player Score: " + playerScore;
-
     let computerScoreEl = document.getElementsByClassName('scoreContainer')[0].childNodes[3];
-    computerScoreEl.textContent = "Computer Score: " + computerScore;
+
+    if(playerScore!=5 && computerScore!=5){
+        
+        resultEl.textContent = "RESULT: " + aResult;
+        playerScoreEl.textContent = "Player Score: " + playerScore;
+        computerScoreEl.textContent = "Computer Score: " + computerScore;
+    }
+    else {
+        if(playerScore==5) resultEl.textContent = "RESULT: PLAYER WINS THE GAME!!! ";
+        else resultEl.textContent = "RESULT: COMPUTER WINS THE GAME!!! ";
+        
+        playerScoreEl.textContent = "Player Score: " + playerScore;
+        computerScoreEl.textContent = "Computer Score: " + computerScore;
+
+        bShouldGameReset=true;
+    }
+
+
 }
 
 // Play 1 full round of Rock paper scissors
@@ -87,21 +100,29 @@ function playRound(playerSelection, computerSelection){
 
 }
 
-
-
+function gameReset(){
+    playerScore = 0;
+    computerScore = 0;
+    bShouldGameReset=false;   
+}
+// declare btn object
 let btnContainer = document.getElementsByClassName('playerInput')[0];
+// add event listener event to the container (#Bubbling)
 if(btnContainer){
     btnContainer.addEventListener('click', (Event) =>{
         let target = Event.target;
 
         switch(target.id){
             case 'rock':
+                if(bShouldGameReset) gameReset()
                 playRound('rock', getRandomChoice())
                 break;
             case 'paper':
+                if(bShouldGameReset) gameReset()
                 playRound('paper', getRandomChoice())
                 break;
             case 'scissors':
+                if(bShouldGameReset) gameReset()
                 playRound('scissors', getRandomChoice())
                 break;
             default:
@@ -111,35 +132,6 @@ if(btnContainer){
     });
 }
 
-UpdateScore(' ');
-
-
-
-// // Player X amount of rounds of Rock Paper Scissors
-// function playGame(rounds){
-
-//     for(let i = 0; i < rounds; i++){
-
-//         if(playerScore === 3 || computerScore === 3){
-//             if(playerScore>computerScore){
-//                 console.log("Player wins!")
-//             }
-//             else {
-//                 console.log("Computer wins!")
-//             }
-//             return; 
-//         } 
-
-//         console.log("ROUND: " + (i+1)); 
-//         playerSelection = window.prompt("Choose Rock, Paper or Scissors").toLowerCase();
-//         computerSelection = getRandomChoice();
-//         console.log("Player: " + playerSelection);
-//         console.log("Computer: " + computerSelection);
-//         playRound(playerSelection, computerSelection);
-//         printScore();
-//         console.log(" ");
-//     }
-// }
 
 
 
